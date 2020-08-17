@@ -42,6 +42,7 @@ func NewVesselServiceEndpoints() []*api.Endpoint {
 // Client API for VesselService service
 
 type VesselService interface {
+	FindAvailable(ctx context.Context, in *Specification, opts ...client.CallOption) (*Response, error)
 }
 
 type vesselService struct {
@@ -56,13 +57,25 @@ func NewVesselService(name string, c client.Client) VesselService {
 	}
 }
 
+func (c *vesselService) FindAvailable(ctx context.Context, in *Specification, opts ...client.CallOption) (*Response, error) {
+	req := c.c.NewRequest(c.name, "VesselService.FindAvailable", in)
+	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for VesselService service
 
 type VesselServiceHandler interface {
+	FindAvailable(context.Context, *Specification, *Response) error
 }
 
 func RegisterVesselServiceHandler(s server.Server, hdlr VesselServiceHandler, opts ...server.HandlerOption) error {
 	type vesselService interface {
+		FindAvailable(ctx context.Context, in *Specification, out *Response) error
 	}
 	type VesselService struct {
 		vesselService
@@ -73,4 +86,8 @@ func RegisterVesselServiceHandler(s server.Server, hdlr VesselServiceHandler, op
 
 type vesselServiceHandler struct {
 	VesselServiceHandler
+}
+
+func (h *vesselServiceHandler) FindAvailable(ctx context.Context, in *Specification, out *Response) error {
+	return h.VesselServiceHandler.FindAvailable(ctx, in, out)
 }
