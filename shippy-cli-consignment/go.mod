@@ -2,7 +2,7 @@ module cli-consignment
 
 go 1.14
 
-//replace github.com/CoolIceV/shippy/shippy-service-consignment => ../shippy-service-consignment
+replace github.com/CoolIceV/shippy/shippy-service-consignment => ../shippy-service-consignment
 
 require (
 	github.com/CoolIceV/shippy/shippy-service-consignment v0.0.0-20200817021305-15ff30e9e1ae

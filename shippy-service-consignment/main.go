@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	pb "github.com/CoolIceV/shippy/shippy-service-consignment/proto/consignment"
-	vesselProto "github.com/CoolIceV/shippy/shippy-vessel-service/proto/vessel"
+	vesselProto "github.com/CoolIceV/shippy/shippy-service-vessel/proto/vessel"
 	"github.com/micro/go-micro/v2"
 	"log"
 )
@@ -34,6 +34,7 @@ func (repo *Repository) GetAll() []*pb.Consignment {
 // to give you a better idea.
 type consignmentService struct {
 	repo repository
+	vesselClient vesselProto.vesselService
 }
 
 // CreateConsignment - we created just one method on our service,
@@ -41,6 +42,7 @@ type consignmentService struct {
 // argument, these are handled by the gRPC server.
 func (s *consignmentService) CreateConsignment(ctx context.Context, req *pb.Consignment, res *pb.Response) error {
 
+	vesselRespinse, err := s.vesselClient
 	// Save our consignment
 	consignment, err := s.repo.Create(req)
 	if err != nil {
@@ -72,10 +74,11 @@ func main() {
 		micro.Version("latest"),
 	)
 
+	vesselClient := vesselProto.NewVesselService("shippy.service.vessel", service.Client())
 	// Init will parse the command line flags.
 	service.Init()
 	// Register service
-	if err := pb.RegisterShippingServiceHandler(service.Server(), &consignmentService{repo}); err != nil {
+	if err := pb.RegisterShippingServiceHandler(service.Server(), &consignmentService{repo, vesselClient}); err != nil {
 		log.Panic(err)
 	}
 
