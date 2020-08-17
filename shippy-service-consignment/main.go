@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	pb "github.com/CoolIceV/shippy/shippy-service-consignment/proto/consignment"
+	vesselProto "github.com/CoolIceV/shippy/shippy-vessel-service/proto/vessel"
 	"github.com/micro/go-micro/v2"
 	"log"
 )

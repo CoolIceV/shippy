@@ -5,8 +5,8 @@ import (
 	"errors"
 	"log"
 
-	pb "github.com/CoolIceV/shippy/shippy-service-vessel/proto/vessel"
 	"github.com/micro/go-micro/v2"
+	pb "github.com/CoolIceV/shippy/shippy-service-vessel/proto/vessel"
 )
 
 type Repository interface {
