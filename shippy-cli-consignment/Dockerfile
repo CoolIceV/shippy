@@ -7,8 +7,7 @@ RUN mkdir /app
 WORKDIR /app
 
 ENV GO111MODULE=on
-ENV GOPROXY=https://mirrors.cloud.tencent.com/go/,direct
-ENV GOSUMDB="sum.golang.google.cn"
+ENV GOPROXY=https://goproxy.io
 
 COPY . .
 
